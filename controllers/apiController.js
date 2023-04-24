@@ -9,9 +9,6 @@ const comicList = async (req, res) => {
   try {
     axios({
       url: `${baseUrl}${url}`,
-      headers: {
-        "content-encoding": "gzip, deflate, br",
-      },
       method: "get",
     })
       .then((result) => {
