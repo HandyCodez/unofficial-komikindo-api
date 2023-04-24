@@ -79,9 +79,6 @@ const comicdetail = async (req, res) => {
   try {
     axios({
       url: `${baseUrl}${url}`,
-      headers: {
-        "content-encoding": "gzip, compress, deflate, br",
-      },
       method: "get",
     })
       .then((result) => {
