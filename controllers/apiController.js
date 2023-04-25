@@ -82,6 +82,9 @@ const comicdetail = async (req, res) => {
   try {
     axios({
       url: `${baseUrl}${url}`,
+      headers: {
+        "User-Agent": "Chrome",
+      },
       method: "get",
     })
       .then((result) => {
@@ -245,6 +248,9 @@ const comicchapter = async (req, res) => {
   try {
     axios({
       url: `${baseUrl}/${endpoint}`,
+      headers: {
+        "User-Agent": "Chrome",
+      },
       method: "get",
     })
       .then((result) => {
