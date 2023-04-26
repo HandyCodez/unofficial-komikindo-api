@@ -54,11 +54,11 @@ const comicList = async (req, res) => {
         $(".pagination a").each((index, el) => {
           pagination.push($(el).text());
         });
-        data.push({ pagination });
 
         res.json({
           status: true,
           data: data,
+          pagination: pagination,
         });
       })
       .catch((error) => {
