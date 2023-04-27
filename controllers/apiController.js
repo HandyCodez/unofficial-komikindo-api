@@ -326,74 +326,77 @@ const comicchapter = async (req, res) => {
 
 const search = async (req, res) => {
   const query = req.params.query;
-  res.json({
-    status: true,
-    data: query,
-  });
 
-  // try {
-  //   axios({
-  //     url: `${baseUrl}/?s=${query}`,
-  //     headers: {
-  //       "User-Agent": "Chrome",
-  //     },
-  //     method: "get",
-  //   }).then((result) => {
-  //     const $ = cheerio.load(result.data);
-  //     let data = [],
-  //       page_title,
-  //       thumb,
-  //       title,
-  //       score,
-  //       warna,
-  //       endpoint,
-  //       type;
-  //     // pagination = [];
+  try {
+    axios({
+      url: `${baseUrl}/?s=${query}`,
+      headers: {
+        "User-Agent": "Chrome",
+      },
+      method: "get",
+    })
+      .then((result) => {
+        const $ = cheerio.load(result.data);
+        let data = [],
+          page_title,
+          thumb,
+          title,
+          score,
+          warna,
+          endpoint,
+          type;
+        // pagination = [];
 
-  //     page_title = $(".page-title").text();
+        page_title = $(".page-title").text();
 
-  //     // ANIME LIST
-  //     $(".animepost").each((index, el) => {
-  //       thumb = $(el).find("img").attr("src");
-  //       title = $(el).find(".tt").text().trim();
-  //       score = $(el).find(".rating > i").text();
-  //       warna =
-  //         $(el).find(".warnalabel").text().trim() === "Warna" ? true : false;
-  //       type = $(el)
-  //         .find(".limit > span")
-  //         .attr("class")
-  //         .replace("typeflag ", "");
-  //       endpoint = $(el)
-  //         .find("a")
-  //         .attr("href")
-  //         .replace(`${baseUrl}/komik/`, "")
-  //         .replace("/", "");
-  //       data.push({
-  //         title,
-  //         thumb,
-  //         score,
-  //         warna,
-  //         type,
-  //         endpoint,
-  //       });
-  //     });
+        // ANIME LIST
+        $(".animepost").each((index, el) => {
+          thumb = $(el).find("img").attr("src");
+          title = $(el).find(".tt").text().trim();
+          score = $(el).find(".rating > i").text();
+          warna =
+            $(el).find(".warnalabel").text().trim() === "Warna" ? true : false;
+          type = $(el)
+            .find(".limit > span")
+            .attr("class")
+            .replace("typeflag ", "");
+          endpoint = $(el)
+            .find("a")
+            .attr("href")
+            .replace(`${baseUrl}/komik/`, "")
+            .replace("/", "");
+          data.push({
+            title,
+            thumb,
+            score,
+            warna,
+            type,
+            endpoint,
+          });
+        });
 
-  //     // pagination
-  //     // $(".pagination a").each((index, el) => {
-  //     //   pagination.push($(el).text());
-  //     // });
+        // pagination
+        // $(".pagination a").each((index, el) => {
+        //   pagination.push($(el).text());
+        // });
 
-  //     res.json({
-  //       status: true,
-  //       data: data,
-  //     });
-  //   });
-  // } catch (error) {
-  //   res.json({
-  //     status: false,
-  //     message: error,
-  //   });
-  // }
+        res.json({
+          status: true,
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.send({
+          status: false,
+          message: error,
+        });
+      });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: error,
+    });
+  }
 };
 
 module.exports = { comicList, comicdetail, comicchapter, search };
