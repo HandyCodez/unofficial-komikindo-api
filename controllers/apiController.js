@@ -329,7 +329,7 @@ const search = async (req, res) => {
 
   try {
     axios({
-      url: `${baseUrl}/?s=${query}`,
+      url: `${baseUrl}?s=${query}`,
       headers: {
         "User-Agent": "Chrome",
       },
