@@ -399,4 +399,54 @@ const search = async (req, res) => {
   }
 };
 
-module.exports = { comicList, comicdetail, comicchapter, search };
+const comicPop = async (req, res) => {
+  try {
+    axios({
+      url: baseUrl,
+      method: "get",
+      headers: {
+        "User-Agent": "Chrome",
+      },
+    })
+      .then((result) => {
+        const $ = cheerio.load(result.data);
+
+        let title,
+          thumb,
+          score,
+          endpoint,
+          data = [];
+        $(".serieslist.pop ul li").each((i, el) => {
+          title = $(el).find(".leftseries h4").text();
+          thumb = $(el).find("img").attr("src");
+          score = $(el).find(".loveviews").text().trim();
+          endpoint = $(el).find(".series").attr("href");
+          console.log(endpoint);
+          data.push({
+            title,
+            thumb,
+            score,
+            endpoint,
+          });
+        });
+
+        res.json({
+          status: true,
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.json({
+          status: false,
+          message: error,
+        });
+      });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+module.exports = { comicList, comicdetail, comicchapter, search, comicPop };
