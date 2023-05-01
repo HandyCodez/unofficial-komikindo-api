@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
       "/api/comic-search/:query",
       "/api/comic-pop",
       "/api/genre-list",
+      "/api/genre-detail/:endpoint/:page",
     ],
   });
 });

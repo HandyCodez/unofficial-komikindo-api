@@ -493,6 +493,83 @@ const genreList = async (req, res) => {
   }
 };
 
+const genreDetail = async (req, res) => {
+  const genre = req.params.endpoint;
+  const page = req.params.page;
+  try {
+    axios({
+      url: `${baseUrl}/genres/${genre}/page/${page}`,
+      method: "get",
+      headers: {
+        "User-Agent": "Chrome",
+      },
+    })
+      .then((result) => {
+        const $ = cheerio.load(result.data);
+
+        let data = [];
+        let thumb,
+          title,
+          score,
+          warna,
+          endpoint,
+          type,
+          pagination = [];
+
+        $(".animepost").each((index, el) => {
+          thumb = $(el).find("img").attr("src");
+          title = $(el).find(".tt").text().trim();
+          score = $(el).find(".rating > i").text();
+          warna =
+            $(el).find(".warnalabel").text().trim() === "Warna" ? true : false;
+          type = $(el)
+            .find(".limit > span")
+            .attr("class")
+            .replace("typeflag ", "");
+          endpoint = $(el)
+            .find("a")
+            .attr("href")
+            .replace(`${baseUrl}/komik/`, "")
+            .replace("/", "");
+          data.push({
+            title,
+            thumb,
+            score,
+            warna,
+            type,
+            endpoint,
+          });
+        });
+
+        $(".pagination a").each((index, el) => {
+          pagination.push($(el).text());
+        });
+
+        console.log(data);
+
+        res.json({
+          status: true,
+          data: {
+            comic_list: data,
+            pagination: pagination,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.json({
+          status: false,
+          message: error,
+        });
+      });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   comicList,
   comicdetail,
@@ -500,4 +577,5 @@ module.exports = {
   search,
   comicPop,
   genreList,
+  genreDetail,
 };
