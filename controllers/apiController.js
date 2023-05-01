@@ -449,4 +449,55 @@ const comicPop = async (req, res) => {
   }
 };
 
-module.exports = { comicList, comicdetail, comicchapter, search, comicPop };
+const genreList = async (req, res) => {
+  try {
+    axios({
+      url: `${baseUrl}/daftar-manga`,
+      method: "get",
+      headers: {
+        "User-Agent": "Chrome",
+      },
+    })
+      .then((result) => {
+        const $ = cheerio.load(result.data);
+
+        let genre_name = [];
+
+        $(".filter.dropdown ul.c4 li").each((i, el) => {
+          const prefix = "genre-";
+          const forValue = $(el).find("label").attr("for");
+          const genre = forValue.replace(prefix, "");
+          if (forValue.includes(prefix)) {
+            genre_name.push(genre);
+          }
+        });
+
+        res.json({
+          status: true,
+          data: {
+            genre_name,
+          },
+        });
+      })
+      .catch((error) => {
+        res.json({
+          status: false,
+          message: error,
+        });
+      });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: error,
+    });
+  }
+};
+
+module.exports = {
+  comicList,
+  comicdetail,
+  comicchapter,
+  search,
+  comicPop,
+  genreList,
+};
