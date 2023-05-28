@@ -495,7 +495,7 @@ const comicPopNow = async (req, res) => {
         });
       });
       return res.json({
-        status: false,
+        status: true,
         data: data,
       });
     });
