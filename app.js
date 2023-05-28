@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
       "/api/comic-chapter/:endpoint",
       "/api/comic-search/:query",
       "/api/comic-pop",
+      "/api/comic-pop-now",
       "/api/genre-list",
       "/api/genre-detail/:endpoint/:page",
     ],

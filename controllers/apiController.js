@@ -449,6 +449,63 @@ const comicPop = async (req, res) => {
   }
 };
 
+const comicPopNow = async (req, res) => {
+  let thumb,
+    title,
+    date,
+    chapter,
+    warna,
+    endpoint,
+    type,
+    data = [];
+  try {
+    axios({
+      url: baseUrl,
+      method: "get",
+      headers: {
+        "User-Agent": "Chrome",
+      },
+    }).then((result) => {
+      const $ = cheerio.load(result.data);
+
+      $(".mangapopuler .animepost").each((i, el) => {
+        thumb = $(el).find("img").attr("src");
+        title = $(el).find(".tt").text().trim();
+        chapter = $(el).find(".lsch a").text();
+        date = $(el).find(".lsch span").text().trim();
+        warna =
+          $(el).find(".warnalabel").text().trim() === "Warna" ? true : false;
+        type = $(el)
+          .find(".limit > span")
+          .attr("class")
+          .replace("typeflag ", "");
+        endpoint = $(el)
+          .find("a")
+          .attr("href")
+          .replace("https://komikindo.pro/komik", "")
+          .replace("/", "");
+        data.push({
+          title,
+          thumb,
+          date,
+          chapter,
+          warna,
+          type,
+          endpoint,
+        });
+      });
+      return res.json({
+        status: false,
+        data: data,
+      });
+    });
+  } catch (error) {
+    return res.json({
+      status: false,
+    });
+  }
+};
+
 const genreList = async (req, res) => {
   try {
     axios({
@@ -576,6 +633,7 @@ module.exports = {
   comicchapter,
   search,
   comicPop,
+  comicPopNow,
   genreList,
   genreDetail,
 };
