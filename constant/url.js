@@ -1,2 +1,2 @@
-const baseUrl = "https://komikindo.pro/";
+const baseUrl = "https://komikindo.pw/";
 module.exports = baseUrl;
