@@ -283,11 +283,7 @@ const comicchapter = async (req, res) => {
           .find("a")
           .each((i, el) => {
             relative_title = $(el).text().trim();
-            relative_endpoint = $(el)
-              .attr("href")
-              .replace(`${baseUrl}/`, "")
-              .replace("komik/", "")
-              .replace("/", "");
+            relative_endpoint = $(el).attr("href")
 
             relativeRaw.push({
               relative_title,
