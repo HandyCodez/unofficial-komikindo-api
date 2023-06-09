@@ -1,2 +1,2 @@
-const baseUrl = "https://api.allorigins.win/raw?url=https://komikindo.one/";
+const baseUrl = "https://komikindo.one/";
 module.exports = baseUrl;
